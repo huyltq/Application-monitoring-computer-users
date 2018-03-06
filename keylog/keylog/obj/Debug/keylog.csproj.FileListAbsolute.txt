@@ -1,0 +1,15 @@
+D:\01.Students\01.School\keylog\keylog\keylog\bin\Debug\keylog.exe.config
+D:\01.Students\01.School\keylog\keylog\keylog\bin\Debug\keylog.exe
+D:\01.Students\01.School\keylog\keylog\keylog\bin\Debug\keylog.pdb
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.Form1.resources
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.Properties.Resources.resources
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.csproj.GenerateResource.Cache
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.csproj.CoreCompileInputs.cache
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.exe
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.pdb
+D:\01.Students\01.School\keylog\keylog\keylog\bin\Debug\keylog.exe.manifest
+D:\01.Students\01.School\keylog\keylog\keylog\bin\Debug\keylog.application
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.csprojResolveAssemblyReference.cache
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.TrustInfo.xml
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.exe.manifest
+D:\01.Students\01.School\keylog\keylog\keylog\obj\Debug\keylog.application
